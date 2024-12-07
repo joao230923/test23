@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="/styles/output.css">
+
+
+    <title>737 burger</title>
+</head>
+
+<body>
+
+    <header class="w-full h-[420px] bg-zinc-900 bg-home bg-center">
+        <div class="w-full h-full flex flex-col justify-center items-center">
+            <img src="./restaurante/design-de-logotipo-de-hamburguer-com-emblema-de-circulo-contorno-em-negrito-estilo-semi-plano-e-cores-completas_1594-964.avif" alt="logo devburguer"
+                class="w-32 h-32 rounded-full shadow-lg hover:scale-110 duration-200 ">
+            <h1 class="text-4xl mt-4 mb-2 font-bold text-white ">737 Burguer
+
+            </h1>
+            <span class="text-white font-medium"> R. Padre Geraldo Spettmann, 737 - Dehon, Tubarão - SC </span>
+
+            <div class="bg-green-600 px-4 py-1 rounded-lg mt-4">
+                <span class="text-white font-medium">Seg á Dom 18:00 as 23:00</span>
+            </div>
+
+
+        </div>
+
+    </header>
+
+    <h2 class="text-2xl md:text-4xl font-bold text-center mt-9 mb-6">
+        conheça nosso menu
+    </h2>
+
+    <div id="menu">
+
+
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16">
+
+            <div class="flex gap-2">
+                <img src="./restaurante/hamb-2.png" alt="smash burguer"
+                    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-200">
+
+                <div>
+                    <p class=" font-bold ">
+                        Hamburguer smash bacon
+                    </p>
+                    <p class="text-sm">
+                        PAO BRIOCHE, HAMBURGUER 2 smash 90G, BACON FATIADO, MUIIIIITO CHEDDAR. ACOMPANHA FRITAS, MOLHO
+                        TIPO
+                        AMERICANO E MAIONESE ESPECIAL
+                        DA CASA.
+                    </p>
+
+
+                    <div class="flex items-center gap-2 justify-between mt-3">
+                        <p class="font-bold text-lg">R$ 31,90</p>
+                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-nome="Hamburguer smash bacon"
+                            data-price="31.90">
+                            <i class="fa fa-cart-plus text-lg text-white"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="flex gap-2">
+                <img src="./restaurante/hamb-5.png" alt="smash burguer"
+                    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-200">
+
+                <div>
+                    <p class=" font-bold ">
+                        Artesanal Salad
+                    </p>
+                    <p class="text-sm">
+                        Pao brioche, 180g de carne de costela,2 X Queijo Cheddar,Tomate,Alface,Cebola Roxa,Picles,Maionese
+
+                        AMERICANO E MAIONESE ESPECIAL
+                        DA CASA.
+                    </p>
+
+
+                    <div class="flex items-center gap-2 justify-between mt-3">
+                        <p class="font-bold text-lg">R$ 31,90</p>
+                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn"
+                         data-nome=" Artesanal Salad"
+                            data-price="31.90">
+                            <i class="fa fa-cart-plus text-lg text-white"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="flex gap-2">
+                <img src="./restaurante/hamb-3.png" alt="smash burguer"
+                    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-200">
+
+                <div>
+                    <p class=" font-bold ">
+                        Smash kids
+                    </p>
+                    <p class="text-sm">
+                        Pão de smash,60g de carne de costela e queijo american cheese.
+                    </p>
+
+
+                    <div class="flex items-center gap-2 justify-between mt-3">
+                        <p class="font-bold text-lg">R$ 19,90</p>
+                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" 
+                        data-nome="Smash kids"
+                            data-price="19.90">
+                            <i class="fa fa-cart-plus text-lg text-white"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="flex gap-2">
+                <img src="./restaurante/hamb-7.png" alt="smash burguer"
+                    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-200">
+
+                <div>
+                    <p class=" font-bold ">
+                        Smash onion rings
+                    </p>
+                    <p class="text-sm">
+                        O 'Smash Onion Rings' é um clássico irresistível. Ele combina um pão brioche tostado e macio, com um suculento hambúrguer de costela de 120g. Este é coberto com crocantes anéis de cebola empanados, que adicionam uma textura única ao prato. Para intensificar os sabores, duas generosas fatias de queijo cheddar são derretidas sobre a carne. Finalizamos com um toque especial: um delicioso e aromático molho de alho, equilibrado pela doçura do molho barbecue. Uma verdadeira explosão de sabores que promete encantar o seu paladar!
+                    </p>
+
+
+                    <div class="flex items-center gap-2 justify-between mt-3">
+                        <p class="font-bold text-lg">R$ 31,90</p>
+                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" 
+                        data-nome="Smash onion rings"
+                            data-price="31.90">
+                            <i class="fa fa-cart-plus text-lg text-white"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </main>
+        <div class="mx-auto max-w-7xl px-2 my-2">
+            <h2 class="font-bold text-3xl">Bebidas</h2>
+        </div>
+
+       <div class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16"id menu> 
+        
+        <div class="flex gap-2">
+            <img src="./restaurante/agua.png" alt="smash burguer"
+                class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-200">
+
+            <div>
+                <p class=" font-bold ">
+                Água com gás
+                </p>
+                <p class="text-sm">
+                    
+                </p>
+
+
+                <div class="flex items-center gap-2 justify-between mt-3">
+                    <p class="font-bold text-lg">R$ 4,90</p>
+                    <button class="bg-gray-900 px-5 rounded add-to-cart-btn" 
+                    data-nome="agua sem gas"
+                        data-price="31.90">
+                        <i class="fa fa-cart-plus text-lg text-white"></i>
+                    </button>
+                </div>
+            </div>
+       
+       </div>
+
+       <div class="flex gap-2">
+        <img src="./restaurante/refri-1.png" alt="smash burguer"
+            class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-200">
+
+        <div>
+            <p class=" font-bold ">
+            coca cola
+            </p>
+            <p class="text-sm">
+                
+            </p>
+
+
+            <div class="flex items-center gap-2 justify-between mt-3">
+                <p class="font-bold text-lg">R$ 6,90</p>
+                <button class="bg-gray-900 px-5 rounded add-to-cart-btn" 
+                data-nome="coca cola"
+                    data-price="6.90">
+                    <i class="fa fa-cart-plus text-lg text-white"></i>
+                </button>
+            </div>
+        </div>
+   
+   </div>
+
+
+   <div class="flex gap-2">
+    <img src="./restaurante/refri-2.png" alt="smash burguer"
+        class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-200">
+
+    <div>
+        <p class=" font-bold ">
+        Guaraná
+        </p>
+        <p class="text-sm">
+            
+        </p>
+
+
+        <div class="flex items-center gap-2 justify-between mt-3">
+            <p class="font-bold text-lg">R$ 6,90</p>
+            <button class="bg-gray-900 px-5 rounded add-to-cart-btn" 
+            data-nome="guarana"
+                data-price="6,90">
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<div class="flex gap-2">
+    <img src="./restaurante/sem gas.png" alt="smash burguer"
+        class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-200">
+
+    <div>
+        <p class=" font-bold ">
+        Aguá sem gás
+        </p>
+        <p class="text-sm">
+            
+        </p>
+
+
+        <div class="flex items-center gap-2 justify-between mt-3">
+            <p class="font-bold text-lg">R$ 3,90</p>
+            <button class="bg-gray-900 px-5 rounded add-to-cart-btn" 
+            data-nome="agua"
+                data-price="3,90">
+                <i class="fa fa-cart-plus text-lg text-white"></i>
+            </button>
+        </div>
+    </div>
+
+</div>
+    </div>
+
+    <!--modal cart -->
+
+    <div 
+    class="bg-black/50 w-full h-full fixed top-0 left-0 z-[99] items-center justify-center hidden"
+    id="cart-modal"
+    >
+
+        <div class="bg-white p-5 rounded-md min-w-[90%] md:min-w-[600px]">
+            <h2 class="text-center font-bold text-2xl mb-2">meu carrinho</h2>
+            <div id="cart-items" class="flex justify-between mb-2 flex-col"></div>
+            <p class="font-bold"> total: <span id="card-total">0.00</span></p>
+            <p class=" font-bold mt-4">Endereço de entrega </p>
+            <input 
+            type="text"
+            placeholder="Digite seu Endereço completo..."
+            id="address"
+            class="w-full border-2 p-1 rounded my-1"
+            >
+            <p class="text-red-500 hidden" id="address-warn">Digite seu Endereço completo</p>
+              
+            <div class="flex itens-center justify-between mt-5 w-full">
+                <button id="close-modal-btn"> fechar</button>
+                <button id="checkout-btn" class="bg-green-500 text-white px-4 py-1 rounded">finalizar pedido </button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--modal cart -->
+
+<!-- butom cart footer-->
+
+<footer class="w-full bg-red-600 py-2 fixed bottom-0 z-40 flex items-center justify-center">
+    <button 
+    class="flex items-center gap-2 text-white font-bold"
+    id="cart-btn"
+    >
+        (<span id="cart-count">0</span>)
+        veja manu carrinho 
+        <i class="fa fa-cart-plus text-lg text-white"> </i>
+    </button>
+</footer>
+
+ <!-- fim butom cart footer-->
+ <button 
+ class="bg-gray-900 px-5 rounded add-to-caart-btn" 
+ data-nome="Smash Bacon" 
+ data-price="31.90" 
+ data-type="Hambúrguer">
+ <i class="fa fa-cart-plus text-lg text-white"></i>
+</button>
+
+<button 
+ class="bg-gray-900 px-5 rounded add-to-caart-btn" 
+ data-nome="Água com Gás" 
+ data-price="4.90" 
+ data-type="Bebida">
+ <i class="fa fa-cart-plus text-lg text-white"></i>
+</button>
+
+
+ <script src="script.js"></script>
+</body>
+
+</html>
