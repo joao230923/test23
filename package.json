@@ -1,9 +1,10 @@
 {
-  "name": "hanburguer",
+  "name": "hamburguer",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "npx tailwindcss -i ./styles/style.css -o ./styles/output.css --watch"
+    "dev": "npx tailwindcss -i ./styles/style.css -o ./styles/output.css --watch",
+    "build": "npx tailwindcss -i ./styles/style.css -o ./styles/build.css"
   },
   "keywords": [],
   "author": "",
