@@ -115,7 +115,7 @@ checkoutBtn.addEventListener("click", function () {
 
   // Montando a mensagem para envio via WhatsApp
   const itemsList = cart.map(item => `${item.name} - R$ ${item.price.toFixed(2)}`).join("\n");
-  const message = `Pedido Finalizado:\nEndereço de entrega: ${address}\nItens:\n${itemsList}\nValor Total: R$ ${total.toFixed(2)}`;
+  const message = `Pedido Finalizado com sucesso:\nEndereço de entrega: ${address}\nItens:\n${itemsList}\nValor Total: R$ ${total.toFixed(2)}`;
   
   // Codifica a mensagem para envio via URL
   const encodedMessage = encodeURIComponent(message);
