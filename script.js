@@ -141,30 +141,27 @@ document.addEventListener("DOMContentLoaded", function () {
   const scheduleElement = document.querySelector(".bg-green-600 span");
 
   // Define o horário de funcionamento
-  const openingHour = 18; // Horário de abertura
-  const closingHour = 23; // Horário de fechamento
+  const openingHour = 18; // 18:00 (abertura)
+  const closingHour = 23; // 23:00 (fechamento)
 
-  // Atualiza o texto do horário de funcionamento
-  if (scheduleElement) {
-      scheduleElement.textContent = "Seg à Dom 18:00 às 23:00";
+  // Função para verificar e atualizar o estado do horário
+  const updateSchedule = () => {
+      const now = new Date();
+      const currentHour = now.getHours();
 
-      // Função para verificar a hora atual e atualizar a cor
-      const updateColor = () => {
-          const now = new Date();
-          const currentHour = now.getHours();
-          const currentMinute = now.getMinutes();
+      if (currentHour >= openingHour && currentHour < closingHour) {
+          // Aberto (18:00 às 23:00)
+          scheduleElement.parentElement.style.backgroundColor = "green"; // Fundo verde
+          scheduleElement.textContent = "Seg à Dom 18:00 às 23:00"; // Exibe horário de funcionamento
+      } else {
+          // Fechado (fora do horário de funcionamento)
+          scheduleElement.parentElement.style.backgroundColor = "red"; // Fundo vermelho
+          scheduleElement.textContent = "Fechado - Seg à Dom 18:00 às 23:00"; // Exibe "Fechado"
+      }
+  };
 
-          if (currentHour === openingHour && currentMinute === 0) {
-              // Altera a cor para verde ao atingir 18:00
-              scheduleElement.style.color = "green";
-          } else {
-              // Mantém a cor padrão fora do horário exato
-              scheduleElement.style.color = "red";
-          }
-      };
-
-      // Verifica a hora a cada minuto
-      updateColor(); // Verifica no carregamento da página
-      setInterval(updateColor, 60000); // Atualiza a cada 60 segundos
-  }
+  // Atualiza o estado inicial e verifica a cada minuto
+  updateSchedule();
+  setInterval(updateSchedule, 60000); // Verifica a cada 60 segundos
 });
+
