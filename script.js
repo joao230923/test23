@@ -137,3 +137,46 @@ checkoutBtn.addEventListener("click", function () {
   renderCartItems();
   cartModal.style.display = "none";
 });
+document.addEventListener("DOMContentLoaded", function () {
+  const scheduleElement = document.querySelector(".bg-green-600 span");
+
+  // Define o horário de funcionamento por dia da semana
+  const schedule = {
+      0: "18:00 às 23:00", // Domingo
+      1: "18:00 às 23:00", // Segunda
+      2: "18:00 às 23:00", // Terça
+      3: "18:00 às 23:00", // Quarta
+      4: "18:00 às 23:00", // Quinta
+      5: "18:00 às 23:00", // Sexta
+      6: "18:00 às 23:00"  // Sábado
+  };
+
+  const dayNames = [
+      "Domingo",
+      "Segunda-feira",
+      "Terça-feira",
+      "Quarta-feira",
+      "Quinta-feira",
+      "Sexta-feira",
+      "Sábado"
+  ];
+
+  const today = new Date();
+  const currentDay = today.getDay(); // Obtém o dia da semana (0 = Domingo, 1 = Segunda, etc.)
+  const currentHour = today.getHours(); // Obtém a hora atual
+
+  const todaySchedule = schedule[currentDay];
+  const dayName = dayNames[currentDay];
+
+  // Atualiza o conteúdo do elemento com os horários dinâmicos
+  if (scheduleElement) {
+      scheduleElement.textContent = `${dayName}: ${todaySchedule}`;
+
+      // Verifica se a hora atual está dentro do horário de funcionamento
+      if (currentHour >= 18 && currentHour < 23) {
+          scheduleElement.style.color = "green"; // Define a cor como verde
+      } else {
+          scheduleElement.style.color = "red"; // Define outra cor fora do horário
+      }
+  }
+});
