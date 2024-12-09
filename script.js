@@ -103,6 +103,18 @@ function removeItemFromCart(index) {
 checkoutBtn.addEventListener("click", function () {
   const address = addressInput.value.trim();
 
+  // Verificação do horário de funcionamento
+  const now = new Date();
+  const currentHour = now.getHours();
+  const openingHour = 18; // 18:00
+  const closingHour = 23; // 23:00
+
+  // Se estiver fora do horário de funcionamento, exibe mensagem e retorna
+  if (currentHour < openingHour || currentHour >= closingHour) {
+    alert("A loja está fechada. Nosso horário de funcionamento é das 18:00 às 23:00.");
+    return; // Impede o envio para o WhatsApp
+  }
+
   if (address === "") {
     addressWarn.style.display = "block";
     return;
@@ -116,7 +128,7 @@ checkoutBtn.addEventListener("click", function () {
   // Montando a mensagem para envio via WhatsApp
   const itemsList = cart.map(item => `${item.name} - R$ ${item.price.toFixed(2)}`).join("\n");
   const message = `Pedido Finalizado com sucesso:\nEndereço de entrega: ${address}\nItens:\n${itemsList}\nValor Total: R$ ${total.toFixed(2)}`;
-  
+
   // Codifica a mensagem para envio via URL
   const encodedMessage = encodeURIComponent(message);
 
@@ -137,6 +149,7 @@ checkoutBtn.addEventListener("click", function () {
   renderCartItems();
   cartModal.style.display = "none";
 });
+
 document.addEventListener("DOMContentLoaded", function () {
   const scheduleElement = document.querySelector(".bg-green-600 span");
 
@@ -146,22 +159,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Função para verificar e atualizar o estado do horário
   const updateSchedule = () => {
-      const now = new Date();
-      const currentHour = now.getHours();
+    const now = new Date();
+    const currentHour = now.getHours();
 
-      if (currentHour >= openingHour && currentHour < closingHour) {
-          // Aberto (18:00 às 23:00)
-          scheduleElement.parentElement.style.backgroundColor = "green"; // Fundo verde
-          scheduleElement.textContent = "Seg à Dom 18:00 às 23:00"; // Exibe horário de funcionamento
-      } else {
-          // Fechado (fora do horário de funcionamento)
-          scheduleElement.parentElement.style.backgroundColor = "red"; // Fundo vermelho
-          scheduleElement.textContent = "Fechado - Seg à Dom 18:00 às 23:00"; // Exibe "Fechado"
-      }
+    if (currentHour >= openingHour && currentHour < closingHour) {
+      // Aberto (18:00 às 23:00)
+      scheduleElement.parentElement.style.backgroundColor = "green"; // Fundo verde
+      scheduleElement.textContent = "Seg à Dom 18:00 às 23:00"; // Exibe horário de funcionamento
+    } else {
+      // Fechado (fora do horário de funcionamento)
+      scheduleElement.parentElement.style.backgroundColor = "red"; // Fundo vermelho
+      scheduleElement.textContent = "Fechado - Seg à Dom 18:00 às 23:00"; // Exibe "Fechado"
+    }
   };
 
   // Atualiza o estado inicial e verifica a cada minuto
   updateSchedule();
   setInterval(updateSchedule, 60000); // Verifica a cada 60 segundos
 });
-
