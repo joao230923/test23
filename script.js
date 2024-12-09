@@ -8,10 +8,13 @@ const closeModalBtn = document.getElementById("close-modal-btn");
 const cartCounter = document.getElementById("cart-count");
 const addressInput = document.getElementById("address");
 const addressWarn = document.getElementById("address-warn");
+const discountInput = document.getElementById("discount-code");
+const discountWarn = document.getElementById("discount-warn");
 
 // Exibir modal do carrinho
 cartBtn.addEventListener("click", function () {
   cartModal.style.display = "flex";
+  renderCartItems();
 });
 
 // Fechar modal ao clicar fora
@@ -40,26 +43,19 @@ menu.addEventListener("click", function (event) {
   }
 });
 
-let cart = []; // Armazena os itens no carrinho
+let cart = JSON.parse(localStorage.getItem("cart")) || []; // Carrega carrinho do localStorage ou inicializa vazio
 
 function addItemToCart(name, price) {
-  // Adiciona o item ao array do carrinho
   cart.push({ name, price });
-
-  // Atualiza o contador do carrinho
+  saveCartToLocalStorage();
   cartCounter.textContent = cart.length;
-
-  // Atualiza a exibição dos itens no modal
   renderCartItems();
 }
 
 function renderCartItems() {
-  // Limpa a lista atual de itens
   cartItemsContainer.innerHTML = "";
-
   let total = 0;
 
-  // Gera os itens dinamicamente no modal
   cart.forEach((item, index) => {
     total += item.price;
 
@@ -75,10 +71,11 @@ function renderCartItems() {
     cartItemsContainer.appendChild(cartItem);
   });
 
-  // Atualiza o total no carrinho
   cartTotal.textContent = total.toFixed(2);
+  addRemoveListeners();
+}
 
-  // Adiciona evento de remoção para cada botão de remover
+function addRemoveListeners() {
   const removeButtons = document.querySelectorAll(".remove-item-btn");
   removeButtons.forEach((button) => {
     button.addEventListener("click", function () {
@@ -89,31 +86,21 @@ function renderCartItems() {
 }
 
 function removeItemFromCart(index) {
-  // Remove o item do carrinho
   cart.splice(index, 1);
-
-  // Atualiza o contador
+  saveCartToLocalStorage();
   cartCounter.textContent = cart.length;
-
-  // Re-renderiza os itens
   renderCartItems();
 }
 
+function saveCartToLocalStorage() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
 // Finalizar pedido e enviar ao WhatsApp
-checkoutBtn.addEventListener("click", function () {
+checkoutBtn.addEventListener("click", async function () {
   const address = addressInput.value.trim();
-
-  // Verificação do horário de funcionamento
-  const now = new Date();
-  const currentHour = now.getHours();
-  const openingHour = 18; // 18:00
-  const closingHour = 23; // 23:00
-
-  // Se estiver fora do horário de funcionamento, exibe mensagem e retorna
-  if (currentHour < openingHour || currentHour >= closingHour) {
-    alert("A loja está fechada. Nosso horário de funcionamento é das 18:00 às 23:00.");
-    return; // Impede o envio para o WhatsApp
-  }
+  const discountCode = discountInput.value.trim();
+  const validDiscount = "DISCOUNT10";
 
   if (address === "") {
     addressWarn.style.display = "block";
@@ -122,58 +109,49 @@ checkoutBtn.addEventListener("click", function () {
 
   addressWarn.style.display = "none";
 
-  // Calcula o valor total do pedido
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
-  // Montando a mensagem para envio via WhatsApp
+  // Verifica e aplica o desconto
+  let discountApplied = 0;
+  if (discountCode === validDiscount) {
+    discountApplied = total * 0.1; // 10% de desconto
+  }
+
+  const finalAmount = total - discountApplied;
+
+  // Simulação da taxa de entrega
+  const deliveryFee = await calculateDeliveryFee(address);
+
+  const finalTotal = finalAmount + deliveryFee;
+
   const itemsList = cart.map(item => `${item.name} - R$ ${item.price.toFixed(2)}`).join("\n");
-  const message = `Pedido Finalizado com sucesso:\nEndereço de entrega: ${address}\nItens:\n${itemsList}\nValor Total: R$ ${total.toFixed(2)}`;
+  const message = `Pedido Finalizado com sucesso:\nEndereço de entrega: ${address}\nItens:\n${itemsList}\nSubtotal: R$ ${total.toFixed(2)}\nDesconto: -R$ ${discountApplied.toFixed(2)}\nTaxa de entrega: +R$ ${deliveryFee.toFixed(2)}\nValor total: R$ ${finalTotal.toFixed(2)}`;
 
-  // Codifica a mensagem para envio via URL
   const encodedMessage = encodeURIComponent(message);
-
-  // Substitua pelo número desejado de WhatsApp (em formato internacional, sem espaços, nem caracteres extras)
-  const whatsappNumber = "5548999701033"; // Número fictício de exemplo. Substitua com o número real
+  const whatsappNumber = "5548999701033";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-  // Abre o WhatsApp no navegador
   window.open(whatsappUrl, "_blank");
 
-  console.log("Pedido finalizado:");
+  console.log("Pedido enviado com sucesso!");
   console.log("Endereço de entrega:", address);
   console.log("Itens no carrinho:", cart);
-  console.log("Valor total: R$", total.toFixed(2));
+  console.log("Valor total: R$", finalTotal);
 
-  // Limpa o carrinho e fecha o modal
   cart = [];
+  saveCartToLocalStorage();
   renderCartItems();
   cartModal.style.display = "none";
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const scheduleElement = document.querySelector(".bg-green-600 span");
+async function calculateDeliveryFee(address) {
+  // Simulação de uma chamada para API externa para cálculo da taxa de entrega.
+  return Math.random() * 10; // Taxa entre 0 e 10 reais (simulado).
+}
 
-  // Define o horário de funcionamento
-  const openingHour = 18; // 18:00 (abertura)
-  const closingHour = 23; // 23:00 (fechamento)
-
-  // Função para verificar e atualizar o estado do horário
-  const updateSchedule = () => {
-    const now = new Date();
-    const currentHour = now.getHours();
-
-    if (currentHour >= openingHour && currentHour < closingHour) {
-      // Aberto (18:00 às 23:00)
-      scheduleElement.parentElement.style.backgroundColor = "green"; // Fundo verde
-      scheduleElement.textContent = "Seg à Dom 18:00 às 23:00"; // Exibe horário de funcionamento
-    } else {
-      // Fechado (fora do horário de funcionamento)
-      scheduleElement.parentElement.style.backgroundColor = "red"; // Fundo vermelho
-      scheduleElement.textContent = "Fechado - Seg à Dom 18:00 às 23:00"; // Exibe "Fechado"
-    }
-  };
-
-  // Atualiza o estado inicial e verifica a cada minuto
-  updateSchedule();
-  setInterval(updateSchedule, 60000); // Verifica a cada 60 segundos
+// Atualizar o desconto ao digitar código
+discountInput.addEventListener("input", function () {
+  if (discountInput.value.trim() !== "") {
+    discountWarn.style.display = "none";
+  }
 });

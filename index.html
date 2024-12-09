@@ -325,6 +325,51 @@
 
 
  <script src="script.js"></script>
+
+<!-- Botão "Sua Conta" -->
+<header class="flex justify-between items-center bg-zinc-900 text-white px-6 py-4">
+    <h1 class="text-2xl font-bold">737 Burguer</h1>
+    <button id="account-btn" class="text-white font-medium bg-green-500 px-4 py-2 rounded-md">Minha Conta</button>
+  </header>
+  
+  <!-- Modal de Login/Registro -->
+  <div id="auth-modal" class="hidden fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg w-[90%] max-w-md">
+      <h2 id="auth-title" class="text-center text-2xl font-bold mb-4">Login</h2>
+      <form id="auth-form">
+        <input
+          type="email"
+          id="email"
+          placeholder="Digite seu e-mail"
+          class="w-full border p-2 mb-3 rounded"
+          required
+        />
+        <input
+          type="password"
+          id="password"
+          placeholder="Digite sua senha"
+          class="w-full border p-2 mb-4 rounded"
+          required
+        />
+        <button
+          type="submit"
+          id="auth-submit"
+          class="w-full bg-green-500 text-white font-bold py-2 rounded"
+        >
+          Entrar
+        </button>
+      </form>
+      <p class="text-center mt-4">
+        Não tem uma conta? <span id="toggle-register" class="text-blue-500 cursor-pointer">Cadastre-se</span>
+      </p>
+      <button id="close-auth" class="absolute top-2 right-2 text-xl">&times;</button>
+    </div>
+  </div>
+  
+
+
+
+
 </body>
 
 </html>
