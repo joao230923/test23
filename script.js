@@ -1,157 +1,96 @@
-const menu = document.getElementById("menu");
-const cartBtn = document.getElementById("cart-btn");
-const cartModal = document.getElementById("cart-modal");
-const cartItemsContainer = document.getElementById("cart-items");
-const cartTotal = document.getElementById("card-total");
-const checkoutBtn = document.getElementById("checkout-btn");
-const closeModalBtn = document.getElementById("close-modal-btn");
-const cartCounter = document.getElementById("cart-count");
-const addressInput = document.getElementById("address");
-const addressWarn = document.getElementById("address-warn");
-const discountInput = document.getElementById("discount-code");
-const discountWarn = document.getElementById("discount-warn");
+// Configuração dos horários de funcionamento
+const openHour = 9; // Horário de abertura (9h)
+const closeHour = 23; // Horário de fechamento (23h)
+const warningStartHour = 18; // Início do horário de aviso (18h)
 
-// Exibir modal do carrinho
-cartBtn.addEventListener("click", function () {
-  cartModal.style.display = "flex";
-  renderCartItems();
-});
+// Elementos do DOM
+const finalizeButton = checkoutBtn; // Checkout Button já definido
+const message = document.getElementById("message"); // Você pode criar um elemento para exibir mensagens
+const cartModal = document.getElementById("cart-modal"); // Modal do carrinho já existente
 
-// Fechar modal ao clicar fora
-cartModal.addEventListener("click", function (event) {
-  if (event.target === cartModal) {
-    cartModal.style.display = "none";
-  }
-});
+// Função para verificar o horário atual
+function isWithinOperatingHours() {
+    const currentHour = new Date().getHours();
+    return currentHour >= openHour && currentHour < closeHour;
+}
 
-// Fechar modal ao clicar no botão de fechar
-closeModalBtn.addEventListener("click", function () {
-  cartModal.style.display = "none";
-});
+// Atualiza o botão e a interface com base no horário
+function updateInterface() {
+    const currentHour = new Date().getHours();
 
-// Adicionar itens ao carrinho
-menu.addEventListener("click", function (event) {
-  const parentButton = event.target.closest(".add-to-cart-btn");
-
-  if (parentButton) {
-    const itemName = parentButton.getAttribute("data-nome");
-    const itemPrice = parseFloat(parentButton.getAttribute("data-price"));
-
-    if (itemName && itemPrice) {
-      addItemToCart(itemName, itemPrice);
+    if (currentHour >= openHour && currentHour < warningStartHour) {
+        finalizeButton.className = 'button open';
+        message.textContent = 'Estamos abertos! Pode finalizar seu pedido.';
+    } else if (currentHour >= warningStartHour && currentHour < closeHour) {
+        finalizeButton.className = 'button outside-hours';
+        message.textContent = 'Estamos próximos do horário de fechamento. Finalize seu pedido em breve!';
+    } else {
+        finalizeButton.className = 'button closed';
+        message.textContent = 'Estamos fechados. Por favor, volte dentro do horário de funcionamento.';
     }
-  }
-});
-
-let cart = JSON.parse(localStorage.getItem("cart")) || []; // Carrega carrinho do localStorage ou inicializa vazio
-
-function addItemToCart(name, price) {
-  cart.push({ name, price });
-  saveCartToLocalStorage();
-  cartCounter.textContent = cart.length;
-  renderCartItems();
 }
 
-function renderCartItems() {
-  cartItemsContainer.innerHTML = "";
-  let total = 0;
+// Atualiza a interface ao carregar a página
+updateInterface();
 
-  cart.forEach((item, index) => {
-    total += item.price;
-
-    const cartItem = document.createElement("div");
-    cartItem.className = "flex justify-between border-b p-2";
-
-    cartItem.innerHTML = `
-      <span>${item.name}</span>
-      <span>R$ ${item.price.toFixed(2)}</span>
-      <button class="text-red-500 remove-item-btn" data-index="${index}">Remover</button>
-    `;
-
-    cartItemsContainer.appendChild(cartItem);
-  });
-
-  cartTotal.textContent = total.toFixed(2);
-  addRemoveListeners();
-}
-
-function addRemoveListeners() {
-  const removeButtons = document.querySelectorAll(".remove-item-btn");
-  removeButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      const index = parseInt(this.getAttribute("data-index"));
-      removeItemFromCart(index);
-    });
-  });
-}
-
-function removeItemFromCart(index) {
-  cart.splice(index, 1);
-  saveCartToLocalStorage();
-  cartCounter.textContent = cart.length;
-  renderCartItems();
-}
-
-function saveCartToLocalStorage() {
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
-
-// Finalizar pedido e enviar ao WhatsApp
+// Evento ao clicar no botão de finalizar pedido
 checkoutBtn.addEventListener("click", async function () {
-  const address = addressInput.value.trim();
-  const discountCode = discountInput.value.trim();
-  const validDiscount = "DISCOUNT10";
+    const currentHour = new Date().getHours();
 
-  if (address === "") {
-    addressWarn.style.display = "block";
-    return;
-  }
+    if (!isWithinOperatingHours()) {
+        alert('Não é possível finalizar o pedido. Estamos fora do horário de funcionamento.');
+        return;
+    }
 
-  addressWarn.style.display = "none";
+    const address = addressInput.value.trim();
+    const discountCode = discountInput.value.trim();
+    const validDiscount = "DISCOUNT10";
 
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
+    if (address === "") {
+        addressWarn.style.display = "block";
+        return;
+    }
 
-  // Verifica e aplica o desconto
-  let discountApplied = 0;
-  if (discountCode === validDiscount) {
-    discountApplied = total * 0.1; // 10% de desconto
-  }
+    addressWarn.style.display = "none";
 
-  const finalAmount = total - discountApplied;
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
 
-  // Simulação da taxa de entrega
-  const deliveryFee = await calculateDeliveryFee(address);
+    // Verifica e aplica o desconto
+    let discountApplied = 0;
+    if (discountCode === validDiscount) {
+        discountApplied = total * 0.1; // 10% de desconto
+    }
 
-  const finalTotal = finalAmount + deliveryFee;
+    const finalAmount = total - discountApplied;
 
-  const itemsList = cart.map(item => `${item.name} - R$ ${item.price.toFixed(2)}`).join("\n");
-  const message = `Pedido Finalizado com sucesso:\nEndereço de entrega: ${address}\nItens:\n${itemsList}\nSubtotal: R$ ${total.toFixed(2)}\nDesconto: -R$ ${discountApplied.toFixed(2)}\nTaxa de entrega: +R$ ${deliveryFee.toFixed(2)}\nValor total: R$ ${finalTotal.toFixed(2)}`;
+    // Simulação da taxa de entrega
+    const deliveryFee = await calculateDeliveryFee(address);
 
-  const encodedMessage = encodeURIComponent(message);
-  const whatsappNumber = "5548999701033";
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+    const finalTotal = finalAmount + deliveryFee;
 
-  window.open(whatsappUrl, "_blank");
+    const itemsList = cart.map(item => `${item.name} - R$ ${item.price.toFixed(2)}`).join("\n");
+    const message = `Pedido Finalizado com sucesso:\nEndereço de entrega: ${address}\nItens:\n${itemsList}\nSubtotal: R$ ${total.toFixed(2)}\nDesconto: -R$ ${discountApplied.toFixed(2)}\nTaxa de entrega: +R$ ${deliveryFee.toFixed(2)}\nValor total: R$ ${finalTotal.toFixed(2)}`;
 
-  console.log("Pedido enviado com sucesso!");
-  console.log("Endereço de entrega:", address);
-  console.log("Itens no carrinho:", cart);
-  console.log("Valor total: R$", finalTotal);
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappNumber = "5548999701033";
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-  cart = [];
-  saveCartToLocalStorage();
-  renderCartItems();
-  cartModal.style.display = "none";
+    window.open(whatsappUrl, "_blank");
+
+    console.log("Pedido enviado com sucesso!");
+    console.log("Endereço de entrega:", address);
+    console.log("Itens no carrinho:", cart);
+    console.log("Valor total: R$", finalTotal);
+
+    cart = [];
+    saveCartToLocalStorage();
+    renderCartItems();
+    cartModal.style.display = "none";
 });
 
-async function calculateDeliveryFee(address) {
-  // Simulação de uma chamada para API externa para cálculo da taxa de entrega.
-  return Math.random() * 10; // Taxa entre 0 e 10 reais (simulado).
-}
-
-// Atualizar o desconto ao digitar código
-discountInput.addEventListener("input", function () {
-  if (discountInput.value.trim() !== "") {
-    discountWarn.style.display = "none";
-  }
+// Chama a atualização da interface ao abrir o modal do carrinho
+cartBtn.addEventListener("click", function () {
+    updateInterface();
+    cartModal.style.display = "flex";
+    renderCartItems();
 });
